@@ -33,7 +33,7 @@ module Kerplutz
 
     def initialize
       @subcommands = []
-      @basecommand = OptionParser.new
+      @basecommand = Command.new(OptionParser.new, :__kerplutz_base)
     end
 
     def banner=(banner)
@@ -56,6 +56,14 @@ module Kerplutz
 
     def banner
       @parser.banner
+    end
+    
+    def banner=(text)
+      @parser.banner = text
+    end
+
+    def help
+      @parser.help
     end
   end
 end
