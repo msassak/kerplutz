@@ -18,7 +18,7 @@ module Kerplutz
       # end
       case args.shift
       when "--version"
-        configuration.basecommand.parse("--version")
+        configuration.helpcommand.parse("--version")
       when "help"
         puts help_banner
       else
@@ -28,7 +28,7 @@ module Kerplutz
 
     def help_banner
       help = ""
-      help << configuration.basecommand.help
+      help << configuration.helpcommand.help
       help << "\n"
       help << " Commands:"
       help << "\n"
@@ -42,20 +42,20 @@ module Kerplutz
   end
 
   class Configuration
-    attr_reader   :basecommand, :subcommands
+    attr_reader   :helpcommand, :subcommands
     attr_accessor :bin_name, :banner
 
     def initialize
       @subcommands = []
-      @basecommand = Command.new(OptionParser.new, :__kerplutz_base)
+      @helpcommand = Command.new(OptionParser.new, :help)
     end
 
     def banner=(banner)
-      basecommand.banner = banner
+      helpcommand.banner = banner
     end
 
     def action(name, &action)
-      basecommand.action(name, &action)
+      helpcommand.action(name, &action)
     end
 
     def command(*command_aliases)
