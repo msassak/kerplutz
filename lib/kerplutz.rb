@@ -10,8 +10,16 @@ module Kerplutz
     end
 
     def parse!(args)
+      # if args[0] !~ /^--/
+      #   this is a flag or switch so execute it
+      # else we assume this is a command so
+      #   find command
+      #   execute command, passing args[1..-1] in as the arguments
+      # end
       case args.shift
-      when "-h", "--help"
+      when "--version"
+        configuration.basecommand.parse("--version")
+      when "help"
         help = ""
         help << configuration.basecommand.help
         help << "\n"
@@ -20,9 +28,21 @@ module Kerplutz
         configuration.subcommands.each do |command|
           help << "  #{command.names.join(', ')} #{command.banner}"
         end
+        help << "\n\n"
+        help << "Type '#{configuration.bin_name} help COMMAND' for help with a specific command.\n"
         puts help
       else
-        puts "For help, type: #{configuration.bin_name} -h"
+        help = ""
+        help << configuration.basecommand.help
+        help << "\n"
+        help << " Commands:"
+        help << "\n"
+        configuration.subcommands.each do |command|
+          help << "  #{command.names.join(', ')} #{command.banner}"
+        end
+        help << "\n\n"
+        help << "Type '#{configuration.bin_name} help COMMAND' for help with a specific command.\n"
+        puts help
       end
     end
   end
@@ -38,6 +58,10 @@ module Kerplutz
 
     def banner=(banner)
       basecommand.banner = banner
+    end
+
+    def action(name, &action)
+      basecommand.action(name, &action)
     end
 
     def command(*command_aliases)
@@ -62,8 +86,16 @@ module Kerplutz
       @parser.banner = text
     end
 
+    def action(name, &action)
+      @parser.on("--#{name}", &action)
+    end
+
     def help
       @parser.help
+    end
+
+    def parse(*args)
+      @parser.parse(*args)
     end
   end
 end
