@@ -20,30 +20,24 @@ module Kerplutz
       when "--version"
         configuration.basecommand.parse("--version")
       when "help"
-        help = ""
-        help << configuration.basecommand.help
-        help << "\n"
-        help << " Commands:"
-        help << "\n"
-        configuration.subcommands.each do |command|
-          help << "  #{command.names.join(', ')} #{command.banner}"
-        end
-        help << "\n\n"
-        help << "Type '#{configuration.bin_name} help COMMAND' for help with a specific command.\n"
-        puts help
+        puts help_banner
       else
-        help = ""
-        help << configuration.basecommand.help
-        help << "\n"
-        help << " Commands:"
-        help << "\n"
-        configuration.subcommands.each do |command|
-          help << "  #{command.names.join(', ')} #{command.banner}"
-        end
-        help << "\n\n"
-        help << "Type '#{configuration.bin_name} help COMMAND' for help with a specific command.\n"
-        puts help
+        puts help_banner
       end
+    end
+
+    def help_banner
+      help = ""
+      help << configuration.basecommand.help
+      help << "\n"
+      help << " Commands:"
+      help << "\n"
+      configuration.subcommands.each do |command|
+        help << "  #{command.names.join(', ')} #{command.banner}"
+      end
+      help << "\n\n"
+      help << "Type '#{configuration.bin_name} help COMMAND' for help with a specific command.\n"
+      help
     end
   end
 
