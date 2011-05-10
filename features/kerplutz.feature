@@ -1,6 +1,6 @@
 Feature: Kerplutz
 
-  Command-line option parser with support for sub-commands
+  Command-line option parser for executables with sub-commands
   (like git or svn) that will not make developers feel kerplutz.
 
   Background: Option parsing configuration
