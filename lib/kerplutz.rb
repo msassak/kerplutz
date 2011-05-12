@@ -2,14 +2,71 @@ require 'optparse'
 
 module Kerplutz
   class << self
-    attr_accessor :configuration
+    def build
+      yield builder = Builder.new
+      builder.result
+    end
+  end
 
-    def configure
-      self.configuration = Configuration.new
-      yield self.configuration
+  class Builder
+    attr_reader   :base
+    attr_accessor :bin_name, :banner
+
+    def initialize
+      @base = Executable.new
     end
 
-    def parse!(args)
+    def bin_name=(name)
+      base.bin_name = name
+    end
+
+    def bin_name
+      base.bin_name
+    end
+
+    def banner=(banner)
+      base.banner = banner
+    end
+
+    def action(name, &action)
+      base.action(name, &action)
+    end
+
+    def command(*command_aliases)
+      parser = OptionParser.new { |opts| yield opts }
+      base.commands << Command.new(parser, *command_aliases)
+    end
+
+    def result
+      base
+    end
+  end
+
+  class Executable
+    attr_reader :commands
+
+    def initialize
+      @commands = []
+      @parser = OptionParser.new
+    end
+
+    def bin_name=(name)
+      @parser.program_name = name
+    end
+
+    def bin_name
+      @parser.program_name
+    end
+
+    def banner=(banner)
+      @parser.banner = banner
+    end
+
+    def action(name, &action)
+      @parser.on("--#{name}", &action)
+    end
+
+    def parse(args)
       # if args[0] !~ /^--/
       #   this is a flag or switch so execute it
       # else we assume this is a command so
@@ -18,7 +75,7 @@ module Kerplutz
       # end
       case args.shift
       when "--version"
-        configuration.helpcommand.parse("--version")
+        @parser.parse("--version")
       when "help"
         puts help_banner
       else
@@ -28,39 +85,16 @@ module Kerplutz
 
     def help_banner
       help = ""
-      help << configuration.helpcommand.help
+      help << @parser.help
       help << "\n"
       help << " Commands:"
       help << "\n"
-      configuration.subcommands.each do |command|
+      commands.each do |command|
         help << "  #{command.names.join(', ')} #{command.banner}"
       end
       help << "\n\n"
-      help << "Type '#{configuration.bin_name} help COMMAND' for help with a specific command.\n"
+      help << "Type '#{bin_name} help COMMAND' for help with a specific command.\n"
       help
-    end
-  end
-
-  class Configuration
-    attr_reader   :helpcommand, :subcommands
-    attr_accessor :bin_name, :banner
-
-    def initialize
-      @subcommands = []
-      @helpcommand = Command.new(OptionParser.new, :help)
-    end
-
-    def banner=(banner)
-      helpcommand.banner = banner
-    end
-
-    def action(name, &action)
-      helpcommand.action(name, &action)
-    end
-
-    def command(*command_aliases)
-      parser = OptionParser.new { |opts| yield opts }
-      subcommands << Command.new(parser, *command_aliases)
     end
   end
 
@@ -75,7 +109,7 @@ module Kerplutz
     def banner
       @parser.banner
     end
-    
+
     def banner=(text)
       @parser.banner = text
     end

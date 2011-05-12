@@ -8,21 +8,21 @@ Feature: Kerplutz
       """
       require 'kerplutz'
 
-      Kerplutz.configure do |config|
-        config.bin_name = 'my_bin'
-        config.banner   = "Usage: #{config.bin_name} COMMAND [ARGS]"
+      kerplutz = Kerplutz.build do |base|
+        base.bin_name = 'my_bin'
+        base.banner   = "Usage: #{base.bin_name} COMMAND [ARGS]"
 
-        config.action :version do
-          puts "#{config.bin_name} version 1.2.3"
+        base.action :version do
+          puts "#{base.bin_name} version 1.2.3"
           exit
         end
 
-        config.command "exec", "x" do |command|
+        base.command "exec", "x" do |command|
           command.banner = "Execute something"
         end
       end
 
-      Kerplutz.parse!(ARGV.dup)
+      kerplutz.parse(ARGV.dup)
       """
 
   Scenario: no arguments
