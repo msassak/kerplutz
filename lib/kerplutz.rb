@@ -28,6 +28,10 @@ module Kerplutz
       base.banner = banner
     end
 
+    def flag(name, desc)
+      base.flag(name, desc)
+    end
+
     def switch(name, desc)
       base.switch(name, desc)
     end
@@ -65,6 +69,10 @@ module Kerplutz
 
     def banner=(banner)
       @parser.banner = banner
+    end
+
+    def flag(name, desc)
+      @parser.on("--#{name}", desc)
     end
 
     def switch(name, desc)

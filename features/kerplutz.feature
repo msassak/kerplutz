@@ -13,11 +13,13 @@ Feature: Kerplutz
         base.banner       = "Usage: #{base.program_name} COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights"
+        base.flag   :frobnicate,    "Frobnicate the furtwangler"
 
         base.action :version do
           puts "#{base.program_name} version 1.2.3"
           exit
         end
+
 
         base.command "exec", "x" do |command|
           command.banner = "Execute something"
@@ -41,6 +43,7 @@ Feature: Kerplutz
       """
       Usage: my_bin COMMAND [ARGS]
               --[no-]blinkenlights         Enable or disable the blinkenlights
+              --frobnicate                 Frobnicate the furtwangler
               --version
 
        Commands:
