@@ -29,11 +29,11 @@ module Kerplutz
     end
 
     def flag(name, desc)
-      base.flag(name, desc)
+      base.add_option(Flag.new(name, desc))
     end
 
     def switch(name, desc)
-      base.switch(name, desc)
+      base.add_option(Switch.new(name, desc))
     end
 
     def action(name, &action)
@@ -52,15 +52,27 @@ module Kerplutz
   end
 
   class Option
-    attr_reader :names, :desc
+    attr_reader :name, :desc
 
-    def initialize(*names, desc)
-      @names = names
+    def initialize(name, desc)
+      @name = name
       @desc = desc
     end
 
     def configure(parser)
-      parser.on(*names, desc)
+      raise "You'll need to implement this one yourself, bub."
+    end
+  end
+
+  class Flag < Option
+    def configure(parser)
+      parser.on("--#{name}", desc)
+    end
+  end
+
+  class Switch < Option
+    def configure(parser)
+      parser.on("--[no-]#{name}", desc)
     end
   end
 
@@ -86,14 +98,6 @@ module Kerplutz
 
     def banner=(banner)
       @parser.banner = banner
-    end
-
-    def flag(name, desc)
-      @parser.on("--#{name}", desc)
-    end
-
-    def switch(name, desc)
-      @parser.on("--[no-]#{name}", desc)
     end
 
     def action(name, &action)
