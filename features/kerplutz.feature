@@ -20,9 +20,12 @@ Feature: Kerplutz
           exit
         end
 
+        base.command "start", "s" do |command|
+          command.banner = "Start the reactor!"
+        end
 
-        base.command "exec", "x" do |command|
-          command.banner = "Execute something"
+        base.command "open", "o" do |command|
+          command.banner = "Open your mind, Quaid"
         end
       end
 
@@ -47,7 +50,8 @@ Feature: Kerplutz
               --version
 
        Commands:
-        exec, x Execute something
+        start, s Start the reactor!
+        open, o Open your mind, Quaid
 
       Type 'my_bin help COMMAND' for help with a specific command.
 

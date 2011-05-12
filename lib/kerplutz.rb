@@ -107,9 +107,9 @@ module Kerplutz
       help << " Commands:"
       help << "\n"
       commands.each do |command|
-        help << "  #{command.names.join(', ')} #{command.banner}"
+        help << "  #{command.names.join(', ')} #{command.banner}\n"
       end
-      help << "\n\n"
+      help << "\n"
       help << "Type '#{program_name} help COMMAND' for help with a specific command.\n"
       help
     end
