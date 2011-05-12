@@ -12,6 +12,8 @@ Feature: Kerplutz
         base.program_name = 'my_bin'
         base.banner       = "Usage: #{base.program_name} COMMAND [ARGS]"
 
+        base.switch :blinkenlights, "Enable or disable the blinkenlights"
+
         base.action :version do
           puts "#{base.program_name} version 1.2.3"
           exit
@@ -38,6 +40,7 @@ Feature: Kerplutz
     Then the output should contain exactly:
       """
       Usage: my_bin COMMAND [ARGS]
+              --[no-]blinkenlights         Enable or disable the blinkenlights
               --version
 
        Commands:
