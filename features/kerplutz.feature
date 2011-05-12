@@ -10,7 +10,7 @@ Feature: Kerplutz
 
       kerplutz = Kerplutz.build do |base|
         base.program_name = 'my_bin'
-        base.banner       = "Usage: #{base.program_name} COMMAND [ARGS]"
+        base.banner       = "Usage: #{base.program_name} [OPTIONS] COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights"
         base.flag   :frobnicate,    "Frobnicate the furtwangler"
@@ -44,7 +44,7 @@ Feature: Kerplutz
     When I run `./my_bin help`
     Then the output should contain exactly:
       """
-      Usage: my_bin COMMAND [ARGS]
+      Usage: my_bin [OPTIONS] COMMAND [ARGS]
               --[no-]blinkenlights         Enable or disable the blinkenlights
               --frobnicate                 Frobnicate the furtwangler
               --version
