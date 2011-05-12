@@ -43,3 +43,4 @@ DEPENDENCIES
   aruba
   cucumber
   kerplutz!
+  rspec

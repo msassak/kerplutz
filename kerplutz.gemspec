@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'cucumber'
   s.add_development_dependency 'aruba'
+  s.add_development_dependency 'rspec'
 
   s.rubygems_version   = "1.3.7"
   s.files            = `git ls-files`.split("\n")

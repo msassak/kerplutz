@@ -51,12 +51,29 @@ module Kerplutz
     end
   end
 
+  class Option
+    attr_reader :names, :desc
+
+    def initialize(*names, desc)
+      @names = names
+      @desc = desc
+    end
+
+    def configure(parser)
+      parser.on(*names, desc)
+    end
+  end
+
   class Executable
-    attr_reader :commands
+    attr_reader :commands, :parser
 
     def initialize
       @commands = []
       @parser = OptionParser.new
+    end
+
+    def add_option(option)
+      option.configure(parser)
     end
 
     def program_name=(name)
