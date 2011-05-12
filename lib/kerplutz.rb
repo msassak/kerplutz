@@ -33,8 +33,9 @@ module Kerplutz
     end
 
     def command(*command_aliases)
-      parser = OptionParser.new { |opts| yield opts }
-      base.commands << Command.new(parser, *command_aliases)
+      command = Command.new(*command_aliases)
+      yield command
+      base.commands << command
     end
 
     def result
@@ -101,8 +102,8 @@ module Kerplutz
   class Command
     attr_reader :names
 
-    def initialize(parser, *names)
-      @parser = parser
+    def initialize(*names)
+      @parser = OptionParser.new
       @names = names
     end
 
