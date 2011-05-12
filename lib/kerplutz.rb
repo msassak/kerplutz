@@ -10,18 +10,18 @@ module Kerplutz
 
   class Builder
     attr_reader   :base
-    attr_accessor :bin_name, :banner
+    attr_accessor :program_name, :banner
 
     def initialize
       @base = Executable.new
     end
 
-    def bin_name=(name)
-      base.bin_name = name
+    def program_name=(name)
+      base.program_name = name
     end
 
-    def bin_name
-      base.bin_name
+    def program_name
+      base.program_name
     end
 
     def banner=(banner)
@@ -50,11 +50,11 @@ module Kerplutz
       @parser = OptionParser.new
     end
 
-    def bin_name=(name)
+    def program_name=(name)
       @parser.program_name = name
     end
 
-    def bin_name
+    def program_name
       @parser.program_name
     end
 
@@ -93,7 +93,7 @@ module Kerplutz
         help << "  #{command.names.join(', ')} #{command.banner}"
       end
       help << "\n\n"
-      help << "Type '#{bin_name} help COMMAND' for help with a specific command.\n"
+      help << "Type '#{program_name} help COMMAND' for help with a specific command.\n"
       help
     end
   end

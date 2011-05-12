@@ -9,11 +9,11 @@ Feature: Kerplutz
       require 'kerplutz'
 
       kerplutz = Kerplutz.build do |base|
-        base.bin_name = 'my_bin'
-        base.banner   = "Usage: #{base.bin_name} COMMAND [ARGS]"
+        base.program_name = 'my_bin'
+        base.banner       = "Usage: #{base.program_name} COMMAND [ARGS]"
 
         base.action :version do
-          puts "#{base.bin_name} version 1.2.3"
+          puts "#{base.program_name} version 1.2.3"
           exit
         end
 
