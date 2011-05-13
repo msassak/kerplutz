@@ -2,8 +2,8 @@ require 'optparse'
 
 module Kerplutz
   class << self
-    def build
-      yield builder = Builder.new
+    def build(name)
+      yield builder = Builder.new(name)
       builder.result
     end
   end
@@ -12,12 +12,8 @@ module Kerplutz
     attr_reader   :base
     attr_accessor :program_name, :banner
 
-    def initialize
-      @base = Executable.new
-    end
-
-    def program_name=(name)
-      base.program_name = name
+    def initialize(name)
+      @base = Executable.new(name)
     end
 
     def program_name
@@ -81,7 +77,7 @@ module Kerplutz
   class Executable
     attr_reader :commands, :parser, :arguments
 
-    def initialize(arguments={})
+    def initialize(name, arguments={})
       @arguments = arguments
       @commands = []
       @parser = OptionParser.new
@@ -89,10 +85,6 @@ module Kerplutz
 
     def add_option(option)
       option.configure(parser, arguments)
-    end
-
-    def program_name=(name)
-      @parser.program_name = name
     end
 
     def program_name

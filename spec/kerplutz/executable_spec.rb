@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Kerplutz
   describe Executable do
-    subject { Executable.new }
+    subject { Executable.new("test") }
 
     context "#add_option" do
       it "passes the parser into the option for configuration" do

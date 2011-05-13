@@ -8,8 +8,7 @@ Feature: Kerplutz
       """
       require 'kerplutz'
 
-      kerplutz = Kerplutz.build do |base|
-        base.program_name = 'my_bin'
+      kerplutz = Kerplutz.build "my_bin" do |base|
         base.banner       = "Usage: #{base.program_name} [OPTIONS] COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights"
