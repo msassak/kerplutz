@@ -37,8 +37,8 @@ module Kerplutz
       base.add_option(Action.new(name, desc, &action))
     end
 
-    def command(*command_aliases)
-      command = Command.new(*command_aliases)
+    def command(name, desc="")
+      command = Command.new(name, desc)
       yield command
       base.commands << command
     end
@@ -132,7 +132,7 @@ module Kerplutz
       help << " Commands:"
       help << "\n"
       commands.each do |command|
-        help << "  #{command.names.join(', ')} #{command.banner}\n"
+        help << "  #{command.name} #{command.desc}\n"
       end
       help << "\n"
       help << "Type '#{program_name} help COMMAND' for help with a specific command.\n"
@@ -141,11 +141,12 @@ module Kerplutz
   end
 
   class Command
-    attr_reader :names
+    attr_reader :name, :desc
 
-    def initialize(*names)
+    def initialize(name, desc)
+      @name = name
+      @desc = desc
       @parser = OptionParser.new
-      @names = names
     end
 
     def banner

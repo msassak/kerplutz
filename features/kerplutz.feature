@@ -22,12 +22,10 @@ Feature: Kerplutz
           puts "#{base.program_name} version 1.2.3"
         end
 
-        base.command "start", "s" do |command|
-          command.banner = "Start the reactor!"
+        base.command :start, "Start the reactor!" do |command|
         end
 
-        base.command "open", "o" do |command|
-          command.banner = "Open your mind, Quaid"
+        base.command :open, "Open your mind, Quaid" do |command|
         end
       end
 
@@ -45,8 +43,8 @@ Feature: Kerplutz
               --version
 
        Commands:
-        start, s Start the reactor!
-        open, o Open your mind, Quaid
+        start Start the reactor!
+        open Open your mind, Quaid
 
       Type 'my_bin help COMMAND' for help with a specific command.
 
