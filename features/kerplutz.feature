@@ -23,6 +23,10 @@ Feature: Kerplutz
         end
 
         base.command :start, "Start the reactor!" do |command|
+          command.banner = "Usage: #{base.program_name} #{command.name} [ARGS]"
+
+          command.switch :lightbulb, "Turn the lightbulb on or off"
+          command.flag   :dry_run,   "Look, but don't touch"
         end
 
         base.command :open, "Open your mind, Quaid" do |command|
@@ -71,5 +75,15 @@ Feature: Kerplutz
     Then the output should contain exactly:
       """
       This is my action!
+
+      """
+
+  Scenario: Get help about a command
+    When I run `./my_bin help start`
+    Then the output should contain exactly:
+      """
+      Usage: my_bin start [ARGS]
+              --[no-]lightbulb             Turn the lightbulb on or off
+              --dry_run                    Look, but don't touch
 
       """

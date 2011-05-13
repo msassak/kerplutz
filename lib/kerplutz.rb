@@ -33,14 +33,13 @@ module Kerplutz
     end
 
     def action(name, desc="", &action)
-      #base.action(name, &action)
       base.add_option(Action.new(name, desc, &action))
     end
 
     def command(name, desc="")
       command = Command.new(name, desc)
       yield command
-      base.commands << command
+      base.add_command(command)
     end
 
     def result
@@ -91,16 +90,23 @@ module Kerplutz
   end
 
   class Executable
-    attr_reader :commands, :parser, :arguments
+    attr_reader :commands, :parser, :arguments, :help
 
     def initialize(name, arguments={})
       @arguments = arguments
-      @commands = []
       @parser = OptionParser.new
+      @parser.program_name = name
+      @help = Help.new
+      @commands = []
     end
 
     def add_option(option)
       option.configure(parser, arguments)
+    end
+
+    def add_command(command)
+      help.register(command)
+      commands << command
     end
 
     def program_name
@@ -111,13 +117,17 @@ module Kerplutz
       @parser.banner = banner
     end
 
-    def action(name, &action)
-      @parser.on("--#{name}", &action)
-    end
-
     def parse(args)
       if args[0] =~ /^--/
         parser.parse(args)
+      elsif args[0] == "help"
+        if args.length == 1
+          puts help_banner
+        else
+          help.parse(args[1..-1])
+        end
+      elsif command = commands.find { |c| c.display_name == args[0] }
+        command.parse(args[1..-1])
       else
         puts help_banner
       end
@@ -127,7 +137,7 @@ module Kerplutz
 
     def help_banner
       help = ""
-      help << @parser.help
+      help << parser.help
       help << "\n"
       help << " Commands:"
       help << "\n"
@@ -141,32 +151,68 @@ module Kerplutz
   end
 
   class Command
-    attr_reader :name, :desc
+    attr_reader :name, :desc, :parser, :arguments
 
     def initialize(name, desc)
       @name = name
       @desc = desc
       @parser = OptionParser.new
+      @arguments = {}
+    end
+
+    def display_name
+      name.to_s.tr("_", "-")
     end
 
     def banner
-      @parser.banner
+      parser.banner
     end
 
     def banner=(text)
-      @parser.banner = text
+      parser.banner = text
     end
 
-    def action(name, &action)
-      @parser.on("--#{name}", &action)
+    def flag(name, desc)
+      add_option(Flag.new(name, desc))
+    end
+
+    def switch(name, desc)
+      add_option(Switch.new(name, desc))
+    end
+
+    def add_option(option)
+      option.configure(parser, arguments)
     end
 
     def help
-      @parser.help
+      parser.help
     end
 
     def parse(*args)
-      @parser.parse(*args)
+      parser.parse(*args)
+    end
+  end
+
+  class Help
+    attr_reader :parser
+
+    def initialize
+      @parser = OptionParser.new
+    end
+
+    def register(command)
+      parser.on("--#{command.display_name}") do
+        puts command.help
+        exit
+      end
+    end
+
+    def parse(args)
+      parser.parse("--#{args[0]}")
+    end
+
+    def to_s
+      parser.help
     end
   end
 end
