@@ -65,27 +65,30 @@ module Kerplutz
   end
 
   class Flag < Option
-    def configure(parser)
+    def configure(parser, arguments)
       parser.on("--#{name}", desc)
     end
   end
 
   class Switch < Option
-    def configure(parser)
-      parser.on("--[no-]#{name}", desc)
+    def configure(parser, arguments)
+      parser.on("--[no-]#{name}", desc) do |arg|
+        arguments[name] = arg
+      end
     end
   end
 
   class Executable
-    attr_reader :commands, :parser
+    attr_reader :commands, :parser, :arguments
 
-    def initialize
+    def initialize(arguments={})
+      @arguments = arguments
       @commands = []
       @parser = OptionParser.new
     end
 
     def add_option(option)
-      option.configure(parser)
+      option.configure(parser, arguments)
     end
 
     def program_name=(name)
@@ -105,20 +108,13 @@ module Kerplutz
     end
 
     def parse(args)
-      # if args[0] !~ /^--/
-      #   this is a flag or switch so execute it
-      # else we assume this is a command so
-      #   find command
-      #   execute command, passing args[1..-1] in as the arguments
-      # end
-      case args.shift
-      when "--version"
-        @parser.parse("--version")
-      when "help"
-        puts help_banner
+      if args[0] =~ /^--/
+        parser.parse(args)
       else
         puts help_banner
       end
+
+      arguments
     end
 
     def help_banner
