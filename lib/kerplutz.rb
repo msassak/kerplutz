@@ -55,6 +55,10 @@ module Kerplutz
       @desc = desc
     end
 
+    def display_name
+      name.to_s.tr("_", "-")
+    end
+
     def configure(parser, arguments)
       raise "You'll need to implement this one yourself, bub."
     end
@@ -62,13 +66,13 @@ module Kerplutz
 
   class Flag < Option
     def configure(parser, arguments)
-      parser.on("--#{name}", desc)
+      parser.on("--#{display_name}", desc)
     end
   end
 
   class Switch < Option
     def configure(parser, arguments)
-      parser.on("--[no-]#{name}", desc) do |arg|
+      parser.on("--[no-]#{display_name}", desc) do |arg|
         arguments[name] = arg
       end
     end
@@ -85,7 +89,7 @@ module Kerplutz
     end
 
     def configure(parser, arguments)
-      parser.on("--#{name}", desc, &@action)
+      parser.on("--#{display_name}", desc, &@action)
     end
   end
 

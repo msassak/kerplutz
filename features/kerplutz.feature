@@ -44,7 +44,7 @@ Feature: Kerplutz
 
               --[no-]blinkenlights         Enable or disable the blinkenlights
               --frobnicate                 Frobnicate the furtwangler
-              --my_action                  Execute my action
+              --my-action                  Execute my action
               --version
 
        Commands:
@@ -72,7 +72,7 @@ Feature: Kerplutz
       """
 
   Scenario: Only first action is executed
-    When I run `./my_bin --my_action --version`
+    When I run `./my_bin --my-action --version`
     Then the output should contain exactly:
       """
       This is my action!
@@ -86,6 +86,6 @@ Feature: Kerplutz
       Usage: my_bin start [ARGS]
 
               --[no-]lightbulb             Turn the lightbulb on or off
-              --dry_run                    Look, but don't touch
+              --dry-run                    Look, but don't touch
 
       """
