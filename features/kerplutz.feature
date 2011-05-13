@@ -79,7 +79,7 @@ Feature: Kerplutz
       """
 
   Scenario: Get help about a command
-    When I run `./my_bin help start`
+    When I run `./my_bin help start --flargle`
     Then the output should contain exactly:
       """
       Usage: my_bin start [ARGS]

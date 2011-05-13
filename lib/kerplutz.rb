@@ -117,6 +117,7 @@ module Kerplutz
       @parser.banner = banner
     end
 
+    # Yuck
     def parse(args)
       if args[0] =~ /^--/
         parser.parse(args)
@@ -188,8 +189,8 @@ module Kerplutz
       parser.help
     end
 
-    def parse(*args)
-      parser.parse(*args)
+    def parse(args)
+      parser.parse(args)
     end
   end
 
@@ -208,11 +209,8 @@ module Kerplutz
     end
 
     def parse(args)
-      parser.parse("--#{args[0]}")
-    end
-
-    def to_s
-      parser.help
+      munged = ["--#{args[0]}", *args[1..-1]]
+      parser.parse(munged)
     end
   end
 end
