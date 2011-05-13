@@ -114,7 +114,7 @@ module Kerplutz
     end
 
     def banner=(banner)
-      @parser.banner = banner
+      @parser.banner = (banner.chomp << "\n\n")
     end
 
     # Yuck
@@ -169,8 +169,8 @@ module Kerplutz
       parser.banner
     end
 
-    def banner=(text)
-      parser.banner = text
+    def banner=(banner)
+      parser.banner = (banner.chomp << "\n\n")
     end
 
     def flag(name, desc)
