@@ -31,14 +31,6 @@ Feature: Kerplutz
       kerplutz.parse(ARGV.dup)
       """
 
-  Scenario: no arguments
-    When I run `./my_bin`
-    Then the output should contain:
-      """
-      Type 'my_bin help COMMAND' for help with a specific command.
-
-      """
-
   Scenario: help
     When I run `./my_bin help`
     Then the output should contain exactly:
@@ -52,6 +44,14 @@ Feature: Kerplutz
         start, s Start the reactor!
         open, o Open your mind, Quaid
 
+      Type 'my_bin help COMMAND' for help with a specific command.
+
+      """
+
+  Scenario: no arguments
+    When I run `./my_bin`
+    Then the output should contain:
+      """
       Type 'my_bin help COMMAND' for help with a specific command.
 
       """
