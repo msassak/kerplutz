@@ -9,14 +9,17 @@ Feature: Kerplutz
       require 'kerplutz'
 
       kerplutz = Kerplutz.build "my_bin" do |base|
-        base.banner       = "Usage: #{base.program_name} [OPTIONS] COMMAND [ARGS]"
+        base.banner = "Usage: #{base.program_name} [OPTIONS] COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights"
         base.flag   :frobnicate,    "Frobnicate the furtwangler"
 
+        base.action :my_action, "Execute my action" do
+          puts "This is my action!"
+        end
+
         base.action :version do
           puts "#{base.program_name} version 1.2.3"
-          exit
         end
 
         base.command "start", "s" do |command|
@@ -38,6 +41,7 @@ Feature: Kerplutz
       Usage: my_bin [OPTIONS] COMMAND [ARGS]
               --[no-]blinkenlights         Enable or disable the blinkenlights
               --frobnicate                 Frobnicate the furtwangler
+              --my_action                  Execute my action
               --version
 
        Commands:
@@ -61,5 +65,13 @@ Feature: Kerplutz
     Then the output should contain exactly:
       """
       my_bin version 1.2.3
+
+      """
+
+  Scenario: Only first action is executed
+    When I run `./my_bin --my_action --version`
+    Then the output should contain exactly:
+      """
+      This is my action!
 
       """

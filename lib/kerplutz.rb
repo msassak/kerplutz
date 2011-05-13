@@ -24,16 +24,17 @@ module Kerplutz
       base.banner = banner
     end
 
-    def flag(name, desc)
+    def flag(name, desc="")
       base.add_option(Flag.new(name, desc))
     end
 
-    def switch(name, desc)
+    def switch(name, desc="")
       base.add_option(Switch.new(name, desc))
     end
 
-    def action(name, &action)
-      base.action(name, &action)
+    def action(name, desc="", &action)
+      #base.action(name, &action)
+      base.add_option(Action.new(name, desc, &action))
     end
 
     def command(*command_aliases)
@@ -55,7 +56,7 @@ module Kerplutz
       @desc = desc
     end
 
-    def configure(parser)
+    def configure(parser, arguments)
       raise "You'll need to implement this one yourself, bub."
     end
   end
@@ -71,6 +72,21 @@ module Kerplutz
       parser.on("--[no-]#{name}", desc) do |arg|
         arguments[name] = arg
       end
+    end
+  end
+
+  class Action < Option
+    def initialize(name, desc, &action)
+      super(name, desc)
+
+      @action = Proc.new do
+        action.call
+        exit
+      end
+    end
+
+    def configure(parser, arguments)
+      parser.on("--#{name}", desc, &@action)
     end
   end
 
