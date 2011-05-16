@@ -65,8 +65,23 @@ module Kerplutz
   end
 
   class Flag < Option
+    attr_accessor :argument_required
+
+    def initialize(name, desc, *args)
+      super(name, desc)
+      @args = args
+    end
+
     def configure(parser, arguments)
-      parser.on("--#{display_name}", desc)
+      template = @args.inject("--#{display_name}") do |acc, arg|
+        acc << " " << convert(arg)
+      end
+
+      parser.on(template, desc)
+    end
+
+    def convert(arg)
+      argument_required ? arg.to_s.upcase : "[#{arg.to_s.upcase}]"
     end
   end
 

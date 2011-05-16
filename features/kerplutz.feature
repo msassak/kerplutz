@@ -30,8 +30,8 @@ Feature: Kerplutz
         end
 
         base.command :open, "Open your mind, Quaid" do |command|
-          command.flag :kuato, "High-level summon", arg: :required
-          command.flag :b, "Print the full backtrace", alias: :backtrace
+          command.flag   :kuato, "High-level summon", required: :host
+          command.switch :b, "Print the full backtrace", alias: :backtrace
         end
       end
 
