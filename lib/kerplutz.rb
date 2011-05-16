@@ -3,7 +3,8 @@ require 'optparse'
 module Kerplutz
   class << self
     def build(name)
-      yield builder = Builder.new(name)
+      executable = Executable.new(name)
+      yield builder = Builder.new(executable)
       builder.result
     end
   end
@@ -12,8 +13,8 @@ module Kerplutz
     attr_reader   :base
     attr_accessor :program_name, :banner
 
-    def initialize(name)
-      @base = Executable.new(name)
+    def initialize(base)
+      @base = base
     end
 
     def program_name
