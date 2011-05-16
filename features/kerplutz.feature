@@ -25,11 +25,13 @@ Feature: Kerplutz
         base.command :start, "Start the reactor!" do |command|
           command.banner = "Usage: #{base.program_name} #{command.name} [ARGS]"
 
-          command.switch :lightbulb, "Turn the lightbulb on or off"
+          command.switch :lightbulb, "Turn the lightbulb on or off", alias: :lb
           command.flag   :dry_run,   "Look, but don't touch"
         end
 
         base.command :open, "Open your mind, Quaid" do |command|
+          command.flag :kuato, "High-level summon", arg: :required
+          command.flag :b, "Print the full backtrace", alias: :backtrace
         end
       end
 

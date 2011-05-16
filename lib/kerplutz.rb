@@ -24,15 +24,15 @@ module Kerplutz
       base.banner = banner
     end
 
-    def flag(name, desc="")
+    def flag(name, desc="", opts={})
       base.add_option(Flag.new(name, desc))
     end
 
-    def switch(name, desc="")
+    def switch(name, desc="", opts={})
       base.add_option(Switch.new(name, desc))
     end
 
-    def action(name, desc="", &action)
+    def action(name, desc="", opts={}, &action)
       base.add_option(Action.new(name, desc, &action))
     end
 
@@ -177,11 +177,11 @@ module Kerplutz
       parser.banner = (banner.chomp << "\n\n")
     end
 
-    def flag(name, desc)
+    def flag(name, desc, opts={})
       add_option(Flag.new(name, desc))
     end
 
-    def switch(name, desc)
+    def switch(name, desc, opts={})
       add_option(Switch.new(name, desc))
     end
 
