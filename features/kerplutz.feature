@@ -9,7 +9,7 @@ Feature: Kerplutz
       require 'kerplutz'
 
       kerplutz = Kerplutz.build "my_bin" do |base|
-        base.banner = "Usage: #{base.program_name} [OPTIONS] COMMAND [ARGS]"
+        base.banner = "Usage: #{base.name} [OPTIONS] COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights"
         base.flag   :frobnicate,    "Frobnicate the furtwangler"
@@ -19,11 +19,11 @@ Feature: Kerplutz
         end
 
         base.action :version do
-          puts "#{base.program_name} version 1.2.3"
+          puts "#{base.name} version 1.2.3"
         end
 
         base.command :start, "Start the reactor!" do |command|
-          command.banner = "Usage: #{base.program_name} #{command.name} [ARGS]"
+          command.banner = "Usage: #{base.name} #{command.name} [ARGS]"
 
           command.switch :lightbulb, "Turn the lightbulb on or off", alias: :lb
           command.flag   :dry_run,   "Look, but don't touch"

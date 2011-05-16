@@ -11,14 +11,13 @@ module Kerplutz
 
   class Builder
     attr_reader   :base
-    attr_accessor :program_name, :banner
 
     def initialize(base)
       @base = base
     end
 
-    def program_name
-      base.program_name
+    def name
+      base.name
     end
 
     def banner=(banner)
@@ -39,8 +38,8 @@ module Kerplutz
 
     def command(name, desc="")
       command = Command.new(name, desc)
-      yield command
-      base.add_command(command)
+      yield builder = Builder.new(command)
+      base.add_command(builder.result)
     end
 
     def result
@@ -129,7 +128,7 @@ module Kerplutz
       commands << command
     end
 
-    def program_name
+    def name
       @parser.program_name
     end
 
@@ -166,7 +165,7 @@ module Kerplutz
         help << "  #{command.name} #{command.desc}\n"
       end
       help << "\n"
-      help << "Type '#{program_name} help COMMAND' for help with a specific command.\n"
+      help << "Type '#{name} help COMMAND' for help with a specific command.\n"
       help
     end
   end
@@ -191,14 +190,6 @@ module Kerplutz
 
     def banner=(banner)
       parser.banner = (banner.chomp << "\n\n")
-    end
-
-    def flag(name, desc, opts={})
-      add_option(Flag.new(name, desc))
-    end
-
-    def switch(name, desc, opts={})
-      add_option(Switch.new(name, desc))
     end
 
     def add_option(option)
