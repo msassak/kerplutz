@@ -127,17 +127,13 @@ module Kerplutz
     def parse(args)
       first, *rest = args
 
-      case
-      when first =~ /^--/
+      case first
+      when option_regex
         top.parse(args)
-      when first == "help"
-        if rest.empty?
-          puts banner
-        else
-          puts commands.help_for(args[1])
-        end
-      when command = commands[first]
-        command.parse(rest)
+      when "help"
+        puts (rest.empty? ? banner : commands[rest.first].help)
+      when commands
+        commands[first].parse(rest)
       else
         puts banner
       end
@@ -157,6 +153,12 @@ module Kerplutz
       help << "\n"
       help << "Type '#{name} help COMMAND' for help with a specific command.\n"
       help
+    end
+
+    private
+
+    def option_regex
+      /^--/
     end
   end
 
@@ -205,8 +207,8 @@ module Kerplutz
       commands[display_name]
     end
 
-    def help_for(display_name)
-      commands[display_name].help
+    def ===(display_name)
+      commands.has_key?(display_name)
     end
 
     def summary(indent=2)
