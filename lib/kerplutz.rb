@@ -162,7 +162,9 @@ module Kerplutz
   end
 
   class Command
+    extend Forwardable
     attr_reader :name, :desc, :arguments, :parser
+    def_delegators :@parser, :banner, :help, :parse
 
     def initialize(name, desc, arguments={})
       @name = name
@@ -175,24 +177,12 @@ module Kerplutz
       name.to_s.tr("_", "-")
     end
 
-    def banner
-      parser.banner
-    end
-
     def banner=(banner)
       parser.banner = (banner.chomp << "\n\n")
     end
 
     def add_option(option)
       option.configure(parser, arguments)
-    end
-
-    def help
-      parser.help
-    end
-
-    def parse(args)
-      parser.parse(args)
     end
   end
 
