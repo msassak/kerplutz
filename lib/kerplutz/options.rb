@@ -29,7 +29,13 @@ module Kerplutz
         acc << " " << convert(arg)
       end
 
-      parser.on(template, desc)
+      parser.on(template, desc) do |arg|
+        if NilClass === arg
+          arguments[name] = true
+        else
+          arguments[name] = arg
+        end
+      end
     end
 
     def convert(arg)

@@ -2,12 +2,22 @@ require 'spec_helper'
 
 module Kerplutz
   describe Flag do
-    let(:parser) { double("parser") }
+    let(:parser) { OptionParser.new }
+    let(:args) { Hash.new }
 
-    it "configures the parser with no arguments" do
-      parser.should_receive(:on).with("--kuato", "Summon Kuato")
-      f = Flag.new(:kuato, 'Summon Kuato')
-      f.configure(parser, {})
+    context "with no arguments" do
+      subject { Flag.new(:kuato, 'Summon Kuato') }
+
+      it "configures the parser" do
+        parser.should_receive(:on).with("--kuato", "Summon Kuato")
+        subject.configure(parser, {})
+      end
+
+      it "extracts arguments correctly" do
+        subject.configure(parser, args)
+        parser.parse("--kuato")
+        args[:kuato].should be_true
+      end
     end
 
     it "configures the parser with an optional argument" do
