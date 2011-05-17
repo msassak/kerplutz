@@ -62,10 +62,12 @@ module Kerplutz
   end
 
   describe Switch do
-    it "configures the parser correctly"
+    it "generates the parser signature"
+    it "configures the parser"
   end
 
   describe Action do
-    it "configures the parser correctly"
+    it "generates the parser signature"
+    it "configures the parser"
   end
 end
