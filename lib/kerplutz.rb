@@ -11,7 +11,7 @@ module Kerplutz
   end
 
   class Builder
-    attr_reader   :base
+    attr_reader :base
 
     def initialize(base)
       @base = base
@@ -38,7 +38,7 @@ module Kerplutz
     end
 
     def command(name, desc="")
-      command = Command.new(name, desc)
+      command = Command.new(name, desc, base.arguments)
       yield builder = Builder.new(command)
       base.add_command(builder.result)
     end
@@ -162,7 +162,7 @@ module Kerplutz
   end
 
   class Command
-    attr_reader :name, :desc, :parser, :arguments
+    attr_reader :name, :desc, :arguments, :parser
 
     def initialize(name, desc, arguments={})
       @name = name
