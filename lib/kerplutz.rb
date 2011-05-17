@@ -1,4 +1,5 @@
 require 'optparse'
+require 'forwardable'
 
 module Kerplutz
   class << self
@@ -109,32 +110,20 @@ module Kerplutz
   end
 
   class Executable
+    extend Forwardable
     attr_reader :commands, :arguments, :help
+    def_delegators :@base_command, :add_option, :name, :banner=
 
     def initialize(name, arguments={})
       @arguments = arguments
-
       @base_command = Command.new(name, '', @arguments)
-
       @help = Help.new
       @commands = []
-    end
-
-    def add_option(option)
-      @base_command.add_option(option)
     end
 
     def add_command(command)
       help.register(command)
       commands << command
-    end
-
-    def name
-      @base_command.name
-    end
-
-    def banner=(banner)
-      @base_command.banner = banner
     end
 
     # Yuck
