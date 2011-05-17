@@ -131,7 +131,7 @@ module Kerplutz
 
       elsif args[0] == "help"
         if args.length == 1
-          puts help_banner
+          puts banner
         else
           puts commands.help_for(args[1])
         end
@@ -140,13 +140,13 @@ module Kerplutz
         command.parse(args[1..-1])
 
       else
-        puts help_banner
+        puts banner
       end
 
       arguments
     end
 
-    def help_banner
+    def banner
       help = ""
       help << @base_command.help
       help << "\n"
