@@ -109,18 +109,19 @@ module Kerplutz
   end
 
   class Executable
-    attr_reader :commands, :parser, :arguments, :help
+    attr_reader :commands, :arguments, :help
 
     def initialize(name, arguments={})
       @arguments = arguments
-      @parser = OptionParser.new
-      @parser.program_name = name
+
+      @base_command = Command.new(name, '', @arguments)
+
       @help = Help.new
       @commands = []
     end
 
     def add_option(option)
-      option.configure(parser, arguments)
+      @base_command.add_option(option)
     end
 
     def add_command(command)
@@ -129,25 +130,28 @@ module Kerplutz
     end
 
     def name
-      @parser.program_name
+      @base_command.name
     end
 
     def banner=(banner)
-      @parser.banner = (banner.chomp << "\n\n")
+      @base_command.banner = banner
     end
 
     # Yuck
     def parse(args)
       if args[0] =~ /^--/
-        parser.parse(args)
+        @base_command.parse(args)
+
       elsif args[0] == "help"
         if args.length == 1
           puts help_banner
         else
           help.parse(args[1..-1])
         end
+
       elsif command = commands.find { |c| c.display_name == args[0] }
         command.parse(args[1..-1])
+
       else
         puts help_banner
       end
@@ -157,7 +161,7 @@ module Kerplutz
 
     def help_banner
       help = ""
-      help << parser.help
+      help << @base_command.help
       help << "\n"
       help << " Commands:"
       help << "\n"
@@ -173,11 +177,11 @@ module Kerplutz
   class Command
     attr_reader :name, :desc, :parser, :arguments
 
-    def initialize(name, desc)
+    def initialize(name, desc, arguments={})
       @name = name
       @desc = desc
+      @arguments = arguments
       @parser = OptionParser.new
-      @arguments = {}
     end
 
     def display_name
