@@ -8,29 +8,56 @@ module Kerplutz
     context "with no arguments" do
       subject { Flag.new(:kuato, 'Summon Kuato') }
 
-      it "configures the parser" do
+      it "generates the parser signature" do
         parser.should_receive(:on).with("--kuato", "Summon Kuato")
         subject.configure(parser, {})
       end
 
-      it "extracts arguments correctly" do
+      it "configures the parser" do
         subject.configure(parser, args)
         parser.parse("--kuato")
         args[:kuato].should be_true
       end
     end
 
-    it "configures the parser with an optional argument" do
-      parser.should_receive(:on).with("--kuato [HOST]", "Summon Kuato")
-      f = Flag.new(:kuato, 'Summon Kuato', :host)
-      f.configure(parser, {})
+    context "with an optional argument" do
+      subject { Flag.new(:kuato, 'Summon Kuato', :host) }
+
+      it "generates the parser signature" do
+        parser.should_receive(:on).with("--kuato [HOST]", "Summon Kuato")
+        subject.configure(parser, {})
+      end
+
+      it "configures the parser" do
+        subject.configure(parser, args)
+
+        parser.parse("--kuato", "George")
+        args[:kuato].should == "George"
+
+        parser.parse("--kuato")
+        args[:kuato].should == true
+      end
     end
 
-    it "configures the parser with a required argument" do
-      parser.should_receive(:on).with("--kuato HOST", "Summon Kuato")
-      f = Flag.new(:kuato, 'Summon Kuato', :host)
-      f.argument_required = true
-      f.configure(parser, {})
+    context "with a required argument" do
+      subject do
+        flag = Flag.new(:kuato, 'Summon Kuato', :host)
+        flag.argument_required = true
+        flag
+      end
+
+      it "generates the parser signature" do
+        parser.should_receive(:on).with("--kuato HOST", "Summon Kuato")
+        subject.configure(parser, {})
+      end
+
+      it "configures the parser" do
+        subject.configure(parser, args)
+        expect { parser.parse("--kuato") }.to raise_error(OptionParser::MissingArgument)
+
+        parser.parse("--kuato", "George")
+        args[:kuato].should == "George"
+      end
     end
   end
 
