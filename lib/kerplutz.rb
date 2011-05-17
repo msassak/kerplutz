@@ -53,7 +53,7 @@ module Kerplutz
   class Executable
     attr_reader :top, :commands, :arguments
 
-    extend Forwardable; def_delegators :@top, :add_option, :name, :banner=
+    extend Forwardable; def_delegators :@top, :add_option, :name, :banner, :banner=
 
     def initialize(name, arguments={})
       @arguments = arguments
