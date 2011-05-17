@@ -115,14 +115,12 @@ module Kerplutz
     def_delegators :@base_command, :add_option, :name, :banner=
 
     def initialize(name, arguments={})
-      @arguments = arguments
+      @arguments    = arguments
       @base_command = Command.new(name, '', @arguments)
-      @help = Help.new
-      @commands = []
+      @commands     = CommandMap.new
     end
 
     def add_command(command)
-      help.register(command)
       commands << command
     end
 
@@ -135,10 +133,10 @@ module Kerplutz
         if args.length == 1
           puts help_banner
         else
-          help.parse(args[1..-1])
+          puts commands.help_for(args[1])
         end
 
-      elsif command = commands.find { |c| c.display_name == args[0] }
+      elsif command = commands[args[0]]
         command.parse(args[1..-1])
 
       else
@@ -152,11 +150,11 @@ module Kerplutz
       help = ""
       help << @base_command.help
       help << "\n"
+
       help << " Commands:"
       help << "\n"
-      commands.each do |command|
-        help << "  #{command.name} #{command.desc}\n"
-      end
+      help << commands.summary
+
       help << "\n"
       help << "Type '#{name} help COMMAND' for help with a specific command.\n"
       help
@@ -198,23 +196,34 @@ module Kerplutz
     end
   end
 
-  class Help
-    attr_reader :parser
+  class CommandMap
+    attr_reader :commands
 
     def initialize
-      @parser = OptionParser.new
+      @commands = {}
+      @summary = ""
     end
 
-    def register(command)
-      parser.on("--#{command.display_name}") do
-        puts command.help
-        exit
+    def add(command)
+      commands[command.display_name] = command
+    end
+
+    def <<(command)
+      add(command) and return self
+    end
+
+    def [](display_name)
+      commands[display_name]
+    end
+
+    def help_for(display_name)
+      commands[display_name].help
+    end
+
+    def summary(indent=2)
+      commands.inject("") do |acc, (display_name, command)|
+        acc << " " * indent << "#{display_name} #{command.desc}\n"
       end
-    end
-
-    def parse(args)
-      munged = ["--#{args[0]}", *args[1..-1]]
-      parser.parse(munged)
     end
   end
 end
