@@ -110,7 +110,7 @@ module Kerplutz
   end
 
   class Executable
-    attr_reader :top, :commands, :arguments, :help
+    attr_reader :top, :commands, :arguments
 
     extend Forwardable; def_delegators :@top, :add_option, :name, :banner=
 
@@ -128,12 +128,16 @@ module Kerplutz
       first, *rest = args
 
       case first
-      when option_regex
-        top.parse(args)
-      when "help"
+
+      when help
         puts (rest.empty? ? banner : commands[rest.first].help)
+
+      when option
+        top.parse(args)
+
       when commands
         commands[first].parse(rest)
+
       else
         puts banner
       end
@@ -157,7 +161,11 @@ module Kerplutz
 
     private
 
-    def option_regex
+    def help
+      /^(--help|help)$/
+    end
+
+    def option
       /^--/
     end
   end
