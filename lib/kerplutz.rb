@@ -147,16 +147,9 @@ module Kerplutz
 
     def banner
       help = ""
-      help << top.help
-      help << "\n"
-
-      help << " Commands:"
-      help << "\n"
-      help << commands.summary
-
-      help << "\n"
+      help << top.help << "\n"
+      help << " Commands:\n" << commands.summary << "\n"
       help << "Type '#{name} help COMMAND' for help with a specific command.\n"
-      help
     end
 
     private
