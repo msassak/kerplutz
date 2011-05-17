@@ -110,35 +110,34 @@ module Kerplutz
   end
 
   class Executable
-    extend Forwardable
-    attr_reader :commands, :arguments, :help
-    def_delegators :@base_command, :add_option, :name, :banner=
+    attr_reader :top, :commands, :arguments, :help
+
+    extend Forwardable; def_delegators :@top, :add_option, :name, :banner=
 
     def initialize(name, arguments={})
-      @arguments    = arguments
-      @base_command = Command.new(name, '', @arguments)
-      @commands     = CommandMap.new
+      @arguments = arguments
+      @top       = Command.new(name, '', @arguments)
+      @commands  = CommandMap.new
     end
 
     def add_command(command)
       commands << command
     end
 
-    # Yuck
     def parse(args)
-      if args[0] =~ /^--/
-        @base_command.parse(args)
+      first, *rest = args
 
-      elsif args[0] == "help"
-        if args.length == 1
+      case
+      when first =~ /^--/
+        top.parse(args)
+      when first == "help"
+        if rest.empty?
           puts banner
         else
           puts commands.help_for(args[1])
         end
-
-      elsif command = commands[args[0]]
-        command.parse(args[1..-1])
-
+      when command = commands[first]
+        command.parse(rest)
       else
         puts banner
       end
@@ -148,7 +147,7 @@ module Kerplutz
 
     def banner
       help = ""
-      help << @base_command.help
+      help << top.help
       help << "\n"
 
       help << " Commands:"
@@ -162,9 +161,9 @@ module Kerplutz
   end
 
   class Command
-    extend Forwardable
     attr_reader :name, :desc, :arguments, :parser
-    def_delegators :@parser, :banner, :help, :parse
+
+    extend Forwardable; def_delegators :@parser, :banner, :help, :parse
 
     def initialize(name, desc, arguments={})
       @name = name
