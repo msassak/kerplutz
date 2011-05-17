@@ -54,6 +54,7 @@ module Kerplutz
       it "configures the parser" do
         subject.configure(parser, args)
         expect { parser.parse("--kuato") }.to raise_error(OptionParser::MissingArgument)
+        args[:kuato].should be_nil
 
         parser.parse("--kuato", "George")
         args[:kuato].should == "George"
