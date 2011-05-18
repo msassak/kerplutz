@@ -85,7 +85,28 @@ module Kerplutz
   end
 
   describe Action do
-    it "generates the parser signature"
-    it "configures the parser"
+    let(:parser) { OptionParser.new }
+    let(:args) { Hash.new }
+
+    subject do
+      action = Action.new(:start_reactor, "Start the reactor!") do
+        $action = "Hello there"
+      end
+      action.exit_after_exec = true
+      action
+    end
+
+    it "generates the parser signature" do
+      parser.should_receive(:on).with("--start-reactor", "Start the reactor!")
+      subject.configure(parser, {})
+    end
+
+    it "configures the parser" do
+      pending do
+        subject.configure(parser, args)
+        parser.parse("--start-reactor")
+        $action.should eq("Hello there")
+      end
+    end
   end
 end

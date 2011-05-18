@@ -52,6 +52,8 @@ module Kerplutz
   end
 
   class Action < Option
+    attr_accessor :exit_after_exec
+
     def initialize(name, desc, &action)
       super(name, desc)
 
