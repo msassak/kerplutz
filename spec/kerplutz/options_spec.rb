@@ -103,6 +103,7 @@ module Kerplutz
 
     it "configures the parser" do
       subject.configure(parser, args)
+      $action.should eq(nil)
       parser.parse("--start-reactor")
       $action.should eq("Hello there")
     end
