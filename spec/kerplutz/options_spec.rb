@@ -92,7 +92,7 @@ module Kerplutz
       action = Action.new(:start_reactor, "Start the reactor!") do
         $action = "Hello there"
       end
-      action.exit_after_exec = true
+      action.continue_after_exec = true
       action
     end
 
@@ -102,11 +102,9 @@ module Kerplutz
     end
 
     it "configures the parser" do
-      pending do
-        subject.configure(parser, args)
-        parser.parse("--start-reactor")
-        $action.should eq("Hello there")
-      end
+      subject.configure(parser, args)
+      parser.parse("--start-reactor")
+      $action.should eq("Hello there")
     end
   end
 end

@@ -52,19 +52,20 @@ module Kerplutz
   end
 
   class Action < Option
-    attr_accessor :exit_after_exec
+    attr_accessor :continue_after_exec
 
     def initialize(name, desc, &action)
       super(name, desc)
-
-      @action = Proc.new do
-        action.call
-        exit
-      end
+      @action = action
     end
 
     def configure(parser, arguments)
-      parser.on("--#{display_name}", desc, &@action)
+      wrapper = Proc.new do
+        @action.call
+        exit unless continue_after_exec
+      end
+
+      parser.on("--#{display_name}", desc, &wrapper)
     end
   end
 end
