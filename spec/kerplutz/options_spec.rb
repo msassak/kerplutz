@@ -63,8 +63,25 @@ module Kerplutz
   end
 
   describe Switch do
-    it "generates the parser signature"
-    it "configures the parser"
+    let(:parser) { OptionParser.new }
+    let(:args) { Hash.new }
+
+    subject { Switch.new(:verbose, "Be chatty") }
+
+    it "generates the parser signature" do
+      parser.should_receive(:on).with("--[no-]verbose", "Be chatty")
+      subject.configure(parser, {})
+    end
+
+    it "configures the parser" do
+      subject.configure(parser, args)
+
+      parser.parse("--verbose")
+      args[:verbose].should be_true
+
+      parser.parse("--no-verbose")
+      args[:verbose].should be_false
+    end
   end
 
   describe Action do
