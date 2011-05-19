@@ -18,7 +18,7 @@ Feature: Kerplutz
           puts "This is my action!"
         end
 
-        base.action :version, abbrev: :V do
+        base.action :version, "Show the version", abbrev: :V do
           puts "#{base.name} version 1.2.3"
         end
 
@@ -26,7 +26,7 @@ Feature: Kerplutz
           command.banner = "Usage: #{base.name} #{command.name} [ARGS]"
 
           command.switch :lightbulb, "Turn the lightbulb on or off"
-          command.flag   :dry_run,   "Look, but don't touch", abbrev: :dr
+          command.flag   :dry_run,   "Look, but don't touch", abbrev: :d
         end
 
         base.command :open, "Open your mind, Quaid" do |command|
@@ -44,10 +44,10 @@ Feature: Kerplutz
       """
       Usage: my-bin [OPTIONS] COMMAND [ARGS]
 
-              --[no-]blinkenlights         Enable or disable the blinkenlights
+          -b, --[no-]blinkenlights         Enable or disable the blinkenlights
               --frobnicate                 Frobnicate the furtwangler
               --my-action                  Execute my action
-              --version
+          -V, --version                    Show the version
 
        Commands:
         start Start the reactor!
@@ -88,7 +88,7 @@ Feature: Kerplutz
       Usage: my-bin start [ARGS]
 
               --[no-]lightbulb             Turn the lightbulb on or off
-              --dry-run                    Look, but don't touch
+          -d, --dry-run                    Look, but don't touch
 
       """
 
@@ -98,8 +98,8 @@ Feature: Kerplutz
       """
       Usage: my-bin open [OPTIONS]
 
-              --kuato                      High-level summon
-              --[no-]backtrace             Print the full backtrace
+          -k, --kuato                      High-level summon
+          -b, --[no-]backtrace             Print the full backtrace
 
       """
 

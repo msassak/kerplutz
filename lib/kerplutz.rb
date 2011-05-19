@@ -28,15 +28,21 @@ module Kerplutz
     end
 
     def flag(name, desc="", opts={})
-      base.add_option(Flag.new(name, desc))
+      flag = Flag.new(name, desc)
+      flag.abbrev = opts[:abbrev]
+      base.add_option(flag)
     end
 
     def switch(name, desc="", opts={})
-      base.add_option(Switch.new(name, desc))
+      switch = Switch.new(name, desc)
+      switch.abbrev = opts[:abbrev]
+      base.add_option(switch)
     end
 
     def action(name, desc="", opts={}, &action)
-      base.add_option(Action.new(name, desc, &action))
+      action = Action.new(name, desc, &action)
+      action.abbrev = opts[:abbrev]
+      base.add_option(action)
     end
 
     def command(name, desc="")
