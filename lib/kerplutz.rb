@@ -159,7 +159,6 @@ module Kerplutz
 
     def initialize
       @commands = {}
-      @summary = ""
     end
 
     def add(command)
