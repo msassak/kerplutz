@@ -11,8 +11,14 @@ generally a pretty slick library, even if its interface is a bit wonky.
 It seemed like a shame to let it go to waste, when getting from it what
 I needed requires only a small amount of code.
 
+## Usage
+
+Real documentation will be forthcoming, but for now see
+`features/kerplutz.feature`.
+
 ## Todo
 
+* README docs for builder and option types
 * Read defaults from a config file
 * Argument type-casts
 * List arguments
