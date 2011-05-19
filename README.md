@@ -11,6 +11,12 @@ generally a pretty slick library, even if its interface is a bit wonky.
 It seemed like a shame to let it go to waste, when getting from it what
 I needed requires only a small amount of code.
 
+## Todo
+
+* Argument type-casts
+* List arguments
+* Multiline descriptions?
+
 ## Copyright
 
 Copyright (c) 2011 Mike Sassak. See LICENSE for details.
