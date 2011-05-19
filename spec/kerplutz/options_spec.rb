@@ -44,7 +44,7 @@ module Kerplutz
     context "with a required argument" do
       subject do
         flag = Flag.new(:kuato, 'Summon Kuato', :host)
-        flag.argument_required = true
+        flag.arg_required = true
         flag
       end
 

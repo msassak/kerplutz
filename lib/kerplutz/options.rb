@@ -26,12 +26,12 @@ module Kerplutz
   end
 
   class Flag < Option
-    attr_accessor :arg_name, :argument_required
+    attr_reader   :arg_name
+    attr_accessor :arg_required
 
-    def initialize(name, desc, *args)
+    def initialize(name, desc, arg_name=nil)
       super(name, desc)
-      @args = args
-      @arg_name = args[0]
+      @arg_name = arg_name
     end
 
     def configure(parser, arguments)
@@ -52,7 +52,7 @@ module Kerplutz
     end
 
     def formatted_arg_name
-      if arg_name and argument_required
+      if arg_name and arg_required
         " #{arg_name.to_s.upcase}"
       elsif arg_name
         " [#{arg_name.to_s.upcase}]"
