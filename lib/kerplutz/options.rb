@@ -25,6 +25,7 @@ module Kerplutz
     end
 
     def configure(parser, arguments)
+      # TODO: refactor template generation
       template = @args.inject("--#{display_name}") do |acc, arg|
         acc << " " << convert(arg)
       end
