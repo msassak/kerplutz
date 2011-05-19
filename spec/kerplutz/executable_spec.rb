@@ -14,7 +14,7 @@ module Kerplutz
 
     context "#banner" do
       it "has a sensible default" do
-        subject.banner.should =~ /^Usage: rspec test \[OPTIONS\]/
+        subject.banner.should =~ /^Usage: rspec test \[OPTIONS\]$/
       end
     end
   end
