@@ -24,9 +24,7 @@ module Kerplutz
     context "with no arguments" do
       subject { Flag.new(:kuato, 'Summon Kuato') }
 
-      it "generates the option signature" do
-        subject.option_sig.should == "--kuato"
-      end
+      its(:option_sig) { should == "--kuato" }
 
       it "configures the parser" do
         subject.configure(parser, args)
@@ -38,9 +36,7 @@ module Kerplutz
     context "with an optional argument" do
       subject { Flag.new(:kuato, 'Summon Kuato', :host) }
 
-      it "generates the option signature" do
-        subject.option_sig.should == "--kuato [HOST]"
-      end
+      its(:option_sig) { should == "--kuato [HOST]" }
 
       it "configures the parser" do
         subject.configure(parser, args)
@@ -60,9 +56,7 @@ module Kerplutz
         flag
       end
 
-      it "generates the option signature" do
-        subject.option_sig.should == "--kuato HOST"
-      end
+      its(:option_sig) { should == "--kuato HOST" }
 
       it "configures the parser" do
         subject.configure(parser, args)
@@ -81,9 +75,7 @@ module Kerplutz
 
     subject { Switch.new(:verbose, "Be chatty") }
 
-    it "generates the option signature" do
-      subject.option_sig.should == "--[no-]verbose"
-    end
+    its(:option_sig) { should == "--[no-]verbose" }
 
     it "configures the parser" do
       subject.configure(parser, args)
