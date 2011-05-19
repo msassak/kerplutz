@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'kerplutz'
-  s.version     = '0.0.9'
+  s.version     = '0.1.0'
   s.authors     = ["Mike Sassak"]
   s.description = "Command-line option parser with subcommands that won't leave you feeling Kerplutz"
   s.summary     = "kerplutz #{s.version}"
