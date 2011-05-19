@@ -12,6 +12,10 @@ module Kerplutz
       name.to_s.tr("_", "-")
     end
 
+    def option_name
+      "--#{display_name}"
+    end
+
     def configure(parser, arguments)
       raise "You'll need to implement this one yourself, bub."
     end
@@ -27,7 +31,7 @@ module Kerplutz
 
     def configure(parser, arguments)
       # TODO: refactor template generation
-      template = @args.inject("--#{display_name}") do |acc, arg|
+      template = @args.inject(option_name) do |acc, arg|
         acc << " " << convert(arg)
       end
 
@@ -49,8 +53,12 @@ module Kerplutz
   end
 
   class Switch < Option
+    def option_name
+      "--[no-]#{display_name}"
+    end
+
     def configure(parser, arguments)
-      args = ["--[no-]#{display_name}", desc]
+      args = [option_name, desc]
       args.unshift("-#{abbrev}") if abbrev
 
       parser.on(*args) do |arg|
@@ -73,7 +81,7 @@ module Kerplutz
         exit unless continue_after_exec
       end
 
-      args = ["--#{display_name}", desc]
+      args = [option_name, desc]
       args.unshift("-#{abbrev}") if abbrev
 
       parser.on(*args, &wrapper)
