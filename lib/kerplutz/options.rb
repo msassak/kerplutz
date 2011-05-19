@@ -1,6 +1,6 @@
 module Kerplutz
   class Option
-    attr_reader :name, :desc
+    attr_reader   :name, :desc
     attr_accessor :abbrev
 
     def initialize(name, desc)
@@ -39,10 +39,7 @@ module Kerplutz
     end
 
     def configure(parser, arguments)
-      args = [option_sig, desc]
-      args.unshift("-#{abbrev}") if abbrev
-
-      parser.on(*args) do |arg|
+      parser.on(*parser_args) do |arg|
         if NilClass === arg
           arguments[name] = true
         else
@@ -70,10 +67,7 @@ module Kerplutz
     end
 
     def configure(parser, arguments)
-      args = [option_sig, desc]
-      args.unshift("-#{abbrev}") if abbrev
-
-      parser.on(*args) do |arg|
+      parser.on(*parser_args) do |arg|
         arguments[name] = arg
       end
     end
@@ -93,10 +87,7 @@ module Kerplutz
         exit unless continue_after_exec
       end
 
-      args = [option_sig, desc]
-      args.unshift("-#{abbrev}") if abbrev
-
-      parser.on(*args, &wrapper)
+      parser.on(*parser_args, &wrapper)
     end
   end
 end
