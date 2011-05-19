@@ -53,7 +53,7 @@ module Kerplutz
   class Executable
     attr_reader :top, :commands, :arguments
 
-    extend Forwardable; def_delegators :@top, :add_option, :name, :banner, :banner=
+    extend Forwardable; def_delegators :@top, :name, :banner, :banner=
 
     def initialize(name, arguments={})
       @arguments = arguments
@@ -63,6 +63,10 @@ module Kerplutz
 
     def add_command(command)
       commands << command
+    end
+
+    def add_option(option)
+      top.add_option(option, false)
     end
 
     def parse(args)
@@ -124,8 +128,13 @@ module Kerplutz
       parser.banner = (banner.chomp << "\n\n")
     end
 
-    def add_option(option)
-      key = :"#{name}_#{option.name}"
+    def add_option(option, prefix_key=true)
+      if prefix_key
+        key = :"#{name}_#{option.name}"
+      else
+        key = option.name.to_sym
+      end
+
       option.configure(parser) do |value|
         arguments[key] = value
       end
