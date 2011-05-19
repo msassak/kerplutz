@@ -16,8 +16,12 @@ module Kerplutz
       "--#{display_name}"
     end
 
-    def parser_arguments
-      [option_sig, desc]
+    def abbrev_sig
+      return "-#{abbrev[0]}" if abbrev
+    end
+
+    def parser_args
+      [abbrev_sig, option_sig, desc].compact
     end
 
     def configure(parser, arguments)

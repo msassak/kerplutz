@@ -1,6 +1,22 @@
 require 'spec_helper'
 
 module Kerplutz
+  describe Option do
+    let(:parser) { OptionParser.new }
+    subject { Option.new(:foo, "Do foo") }
+
+    it "generates the parser arguments" do
+      subject.parser_args.should == ["--foo", "Do foo"]
+    end
+
+    context "with an abbreviation" do
+      it "generates the parser arguments" do
+        subject.abbrev = :f
+        subject.parser_args.should == ["-f", "--foo", "Do foo"]
+      end
+    end
+  end
+
   describe Flag do
     let(:parser) { OptionParser.new }
     let(:args) { Hash.new }
@@ -8,8 +24,8 @@ module Kerplutz
     context "with no arguments" do
       subject { Flag.new(:kuato, 'Summon Kuato') }
 
-      it "generates the parser signature" do
-        subject.parser_arguments.should == ["--kuato", "Summon Kuato"]
+      it "generates the option signature" do
+        subject.option_sig.should == "--kuato"
       end
 
       it "configures the parser" do
@@ -22,8 +38,8 @@ module Kerplutz
     context "with an optional argument" do
       subject { Flag.new(:kuato, 'Summon Kuato', :host) }
 
-      it "generates the parser signature" do
-        subject.parser_arguments.should == ["--kuato [HOST]", "Summon Kuato"]
+      it "generates the option signature" do
+        subject.option_sig.should == "--kuato [HOST]"
       end
 
       it "configures the parser" do
@@ -44,8 +60,8 @@ module Kerplutz
         flag
       end
 
-      it "generates the parser signature" do
-        subject.parser_arguments.should == ["--kuato HOST", "Summon Kuato"]
+      it "generates the option signature" do
+        subject.option_sig.should == "--kuato HOST"
       end
 
       it "configures the parser" do
@@ -65,8 +81,8 @@ module Kerplutz
 
     subject { Switch.new(:verbose, "Be chatty") }
 
-    it "generates the parser signature" do
-      subject.parser_arguments.should == ["--[no-]verbose", "Be chatty"]
+    it "generates the option signature" do
+      subject.option_sig.should == "--[no-]verbose"
     end
 
     it "configures the parser" do
@@ -90,10 +106,6 @@ module Kerplutz
       end
       action.continue_after_exec = true
       action
-    end
-
-    it "generates the parser signature" do
-      subject.parser_arguments.should == ["--start-reactor", "Start the reactor!"]
     end
 
     it "configures the parser" do
