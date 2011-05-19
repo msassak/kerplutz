@@ -92,7 +92,7 @@ Feature: Kerplutz
 
       """
 
-  Scenario: Get help about a command without a banner
+  Scenario: Get help about a command with a default banner
     When I run `./my-bin help open`
     Then the output should contain exactly:
       """
