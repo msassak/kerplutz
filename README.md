@@ -13,6 +13,7 @@ I needed requires only a small amount of code.
 
 ## Todo
 
+* Read defaults from a config file
 * Argument type-casts
 * List arguments
 * Cleanup OptionParser's puking when an option isn't recognized
