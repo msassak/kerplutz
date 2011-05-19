@@ -7,8 +7,7 @@ module Kerplutz
     describe "#parse" do
       it "extracts the options from the arguments" do
         subject.add_option(Switch.new(:foo, ''))
-        arguments = subject.parse(["--foo"])
-        arguments.should == { :foo => true }
+        subject.parse(["--foo"]).should == [{ :foo => true }, []]
       end
     end
 

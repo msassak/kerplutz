@@ -71,6 +71,7 @@ module Kerplutz
 
     def parse(args)
       first, *rest = args
+      remainder = []
 
       case first
 
@@ -78,16 +79,16 @@ module Kerplutz
         puts (rest.empty? ? banner : commands[rest.first].help)
 
       when option
-        top.parse(args)
+        remainder = top.parse(args)
 
       when commands
-        commands[first].parse(rest)
+        remainder = commands[first].parse(rest)
 
       else
         puts banner
       end
 
-      arguments
+      [arguments, remainder]
     end
 
     def banner
@@ -104,7 +105,7 @@ module Kerplutz
     end
 
     def option
-      /^--/
+      /^(--|-)[\w-]+$/
     end
   end
 
