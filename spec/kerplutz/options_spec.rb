@@ -9,8 +9,6 @@ module Kerplutz
       subject { Flag.new(:kuato, 'Summon Kuato') }
 
       it "generates the parser signature" do
-        parser.should_receive(:on).with("--kuato", "Summon Kuato")
-        subject.configure(parser, {})
         subject.parser_arguments.should == ["--kuato", "Summon Kuato"]
       end
 
@@ -25,8 +23,6 @@ module Kerplutz
       subject { Flag.new(:kuato, 'Summon Kuato', :host) }
 
       it "generates the parser signature" do
-        parser.should_receive(:on).with("--kuato [HOST]", "Summon Kuato")
-        subject.configure(parser, {})
         subject.parser_arguments.should == ["--kuato [HOST]", "Summon Kuato"]
       end
 
@@ -49,8 +45,6 @@ module Kerplutz
       end
 
       it "generates the parser signature" do
-        parser.should_receive(:on).with("--kuato HOST", "Summon Kuato")
-        subject.configure(parser, {})
         subject.parser_arguments.should == ["--kuato HOST", "Summon Kuato"]
       end
 
@@ -72,8 +66,7 @@ module Kerplutz
     subject { Switch.new(:verbose, "Be chatty") }
 
     it "generates the parser signature" do
-      parser.should_receive(:on).with("--[no-]verbose", "Be chatty")
-      subject.configure(parser, {})
+      subject.parser_arguments.should == ["--[no-]verbose", "Be chatty"]
     end
 
     it "configures the parser" do
@@ -100,8 +93,7 @@ module Kerplutz
     end
 
     it "generates the parser signature" do
-      parser.should_receive(:on).with("--start-reactor", "Start the reactor!")
-      subject.configure(parser, {})
+      subject.parser_arguments.should == ["--start-reactor", "Start the reactor!"]
     end
 
     it "configures the parser" do
