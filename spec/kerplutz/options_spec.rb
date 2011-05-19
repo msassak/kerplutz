@@ -13,6 +13,8 @@ module Kerplutz
       it "generates the parser arguments" do
         subject.abbrev = :f
         subject.parser_args.should == ["-f", "--foo", "Do foo"]
+        subject.abbrev = :option_parser_does_weird_things_if_more_than_one_character
+        subject.parser_args.should == ["-o", "--foo", "Do foo"]
       end
     end
   end
