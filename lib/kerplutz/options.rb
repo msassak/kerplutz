@@ -3,6 +3,12 @@ module Kerplutz
     attr_reader   :name, :desc
     attr_accessor :abbrev
 
+    def self.build(name, desc, opts)
+      option = self.new(name, desc)
+      option.abbrev = opts[:abbrev]
+      option
+    end
+
     def initialize(name, desc)
       @name = name
       @desc = desc
@@ -76,7 +82,13 @@ module Kerplutz
   end
 
   class Action < Option
-    attr_accessor :continue_after_exec
+    attr_accessor :action, :continue_after_exec
+
+    def self.build(name, desc, opts, &action)
+      new_action = super(name, desc, opts)
+      new_action.action = action
+      new_action
+    end
 
     def initialize(name, desc, &action)
       super(name, desc)
@@ -85,7 +97,7 @@ module Kerplutz
 
     def configure(parser, arguments)
       parser.on(*parser_args) do
-        @action.call
+        action.call
         exit unless continue_after_exec
       end
     end
