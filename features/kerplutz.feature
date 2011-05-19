@@ -12,7 +12,7 @@ Feature: Kerplutz
         base.banner = "Usage: #{base.name} [OPTIONS] COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights", abbrev: :b
-        base.flag   :frobnicate,    "Frobnicate the furtwangler"
+        base.flag   :frobnicate,    "Frobnicate the furtwangler", optional: :target
 
         base.action :my_action, "Execute my action" do
           puts "This is my action!"
@@ -45,7 +45,7 @@ Feature: Kerplutz
       Usage: my-bin [OPTIONS] COMMAND [ARGS]
 
           -b, --[no-]blinkenlights         Enable or disable the blinkenlights
-              --frobnicate                 Frobnicate the furtwangler
+              --frobnicate [TARGET]        Frobnicate the furtwangler
               --my-action                  Execute my action
           -V, --version                    Show the version
 
@@ -98,7 +98,7 @@ Feature: Kerplutz
       """
       Usage: my-bin open [OPTIONS]
 
-          -k, --kuato                      High-level summon
+          -k, --kuato HOST                 High-level summon
           -b, --[no-]backtrace             Print the full backtrace
 
       """

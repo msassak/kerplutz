@@ -36,8 +36,14 @@ module Kerplutz
   end
 
   class Flag < Option
-    attr_reader   :arg_name
-    attr_accessor :arg_required
+    attr_accessor :arg_name, :arg_required
+
+    def self.build(name, desc, opts)
+      flag = super(name, desc, opts)
+      flag.arg_name = opts[:required] || opts[:optional]
+      flag.arg_required = opts.has_key?(:required)
+      flag
+    end
 
     def initialize(name, desc, arg_name=nil)
       super(name, desc)
