@@ -4,7 +4,7 @@ module Kerplutz
   describe Executable do
     subject { Executable.new("test") }
 
-    context "#parse" do
+    describe "#parse" do
       it "extracts the options from the arguments" do
         subject.add_option(Switch.new(:foo, ''))
         arguments = subject.parse(["--foo"])
@@ -12,7 +12,7 @@ module Kerplutz
       end
     end
 
-    context "#banner" do
+    describe "#banner" do
       it "has a sensible default" do
         subject.banner.should =~ /^Usage: rspec test \[OPTIONS\]$/
       end
