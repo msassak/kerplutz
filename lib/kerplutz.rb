@@ -125,7 +125,10 @@ module Kerplutz
     end
 
     def add_option(option)
-      option.configure(parser, arguments)
+      key = :"#{name}_#{option.name}"
+      option.configure(parser) do |value|
+        arguments[key] = value
+      end
     end
 
     private

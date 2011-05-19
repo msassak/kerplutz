@@ -30,7 +30,7 @@ module Kerplutz
       [abbrev_sig, option_sig, desc].compact
     end
 
-    def configure(parser, arguments)
+    def configure(parser, &blk)
       raise "You'll need to implement this one yourself, bub."
     end
   end
@@ -50,12 +50,12 @@ module Kerplutz
       @arg_name = arg_name
     end
 
-    def configure(parser, arguments)
+    def configure(parser, &blk)
       parser.on(*parser_args) do |arg|
         if NilClass === arg
-          arguments[name] = true
+          blk.call(true)
         else
-          arguments[name] = arg
+          blk.call(arg)
         end
       end
     end
@@ -80,9 +80,9 @@ module Kerplutz
       "--[no-]#{display_name}"
     end
 
-    def configure(parser, arguments)
+    def configure(parser, &blk)
       parser.on(*parser_args) do |arg|
-        arguments[name] = arg
+        blk.call(arg)
       end
     end
   end
@@ -101,7 +101,7 @@ module Kerplutz
       @action = action
     end
 
-    def configure(parser, arguments)
+    def configure(parser, &blk)
       parser.on(*parser_args) do
         action.call
         exit unless continue_after_exec

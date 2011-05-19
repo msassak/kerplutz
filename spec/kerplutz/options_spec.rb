@@ -29,9 +29,10 @@ module Kerplutz
       its(:option_sig) { should == "--kuato" }
 
       it "configures the parser" do
-        subject.configure(parser, args)
+        subject.configure(parser) do |value|
+          value.should === true
+        end
         parser.parse("--kuato")
-        args[:kuato].should be_true
       end
     end
 
@@ -41,13 +42,15 @@ module Kerplutz
       its(:option_sig) { should == "--kuato [HOST]" }
 
       it "configures the parser" do
-        subject.configure(parser, args)
-
+        subject.configure(parser) do |value|
+          value.should == "George"
+        end
         parser.parse("--kuato", "George")
-        args[:kuato].should == "George"
 
+        subject.configure(parser) do |value|
+          value.should === true
+        end
         parser.parse("--kuato")
-        args[:kuato].should == true
       end
     end
 
@@ -61,12 +64,13 @@ module Kerplutz
       its(:option_sig) { should == "--kuato HOST" }
 
       it "configures the parser" do
-        subject.configure(parser, args)
+        subject.configure(parser) { |value| } # no-op
         expect { parser.parse("--kuato") }.to raise_error(OptionParser::MissingArgument)
-        args[:kuato].should be_nil
 
+        subject.configure(parser) do |value|
+          value.should == "George"
+        end
         parser.parse("--kuato", "George")
-        args[:kuato].should == "George"
       end
     end
   end
@@ -80,13 +84,15 @@ module Kerplutz
     its(:option_sig) { should == "--[no-]verbose" }
 
     it "configures the parser" do
-      subject.configure(parser, args)
-
+      subject.configure(parser) do |value|
+        value.should === true
+      end
       parser.parse("--verbose")
-      args[:verbose].should be_true
 
+      subject.configure(parser) do |value|
+        value.should be_false
+      end
       parser.parse("--no-verbose")
-      args[:verbose].should be_false
     end
   end
 
@@ -103,7 +109,7 @@ module Kerplutz
     end
 
     it "configures the parser" do
-      subject.configure(parser, args)
+      subject.configure(parser)
       $action.should eq(nil)
       parser.parse("--start-reactor")
       $action.should eq("Hello there")
