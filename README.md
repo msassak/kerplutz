@@ -15,6 +15,7 @@ I needed requires only a small amount of code.
 
 * Argument type-casts
 * List arguments
+* Cleanup OptionParser's puking when an option isn't recognized
 * Multiline descriptions?
 
 ## Copyright

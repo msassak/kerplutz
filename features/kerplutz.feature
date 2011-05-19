@@ -103,5 +103,8 @@ Feature: Kerplutz
 
       """
 
+  @todo
   Scenario: Invoke a flag with required argument without an argument
+
+  @todo
   Scenario: Invoke an unknown option
