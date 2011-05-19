@@ -52,6 +52,8 @@ module Kerplutz
       "#{super}#{formatted_arg_name}"
     end
 
+    private
+
     def formatted_arg_name
       if arg_name and arg_required
         " #{arg_name.to_s.upcase}"
