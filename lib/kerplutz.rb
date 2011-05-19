@@ -113,11 +113,11 @@ module Kerplutz
       @name = name
       @desc = desc
       @arguments = arguments
-      @parser = OptionParser.new
+      @parser = OptionParser.new(default_banner)
     end
 
     def display_name
-      name.to_s.tr("_", "-")
+      @display_name ||= name.to_s.tr("_", "-")
     end
 
     def banner=(banner)
@@ -126,6 +126,25 @@ module Kerplutz
 
     def add_option(option)
       option.configure(parser, arguments)
+    end
+
+    private
+
+    # TODO: Is this a better fit for Executable?
+    def default_banner
+      "Usage: #{command_name} [OPTIONS]\n\n"
+    end
+
+    def command_name
+      if program_name == display_name
+        program_name
+      else
+        "#{program_name} #{display_name}"
+      end
+    end
+
+    def program_name
+      @program_name ||= File.basename($PROGRAM_NAME)
     end
   end
 

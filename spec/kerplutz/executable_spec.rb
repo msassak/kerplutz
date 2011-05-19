@@ -11,5 +11,11 @@ module Kerplutz
         arguments.should == { :foo => true }
       end
     end
+
+    context "#banner" do
+      it "has a sensible default" do
+        subject.banner.should =~ /^Usage: rspec test \[OPTIONS\]/
+      end
+    end
   end
 end

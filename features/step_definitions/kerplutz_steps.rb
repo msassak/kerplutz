@@ -1,4 +1,4 @@
-Given /^an executable named "(\w+)" with:$/ do |name, body|
+Given /^an executable named "(.+)" with:$/ do |name, body|
   contents = <<EOF
 #!/usr/bin/env ruby
 $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../../lib'))

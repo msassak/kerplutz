@@ -4,11 +4,11 @@ Feature: Kerplutz
   (like git or svn) that will not make developers feel kerplutz.
 
   Background: Option parsing configuration
-    Given an executable named "my_bin" with:
+    Given an executable named "my-bin" with:
       """
       require 'kerplutz'
 
-      kerplutz = Kerplutz.build "my_bin" do |base|
+      kerplutz = Kerplutz.build "my-bin" do |base|
         base.banner = "Usage: #{base.name} [OPTIONS] COMMAND [ARGS]"
 
         base.switch :blinkenlights, "Enable or disable the blinkenlights"
@@ -39,10 +39,10 @@ Feature: Kerplutz
       """
 
   Scenario: help
-    When I run `./my_bin help`
+    When I run `./my-bin help`
     Then the output should contain exactly:
       """
-      Usage: my_bin [OPTIONS] COMMAND [ARGS]
+      Usage: my-bin [OPTIONS] COMMAND [ARGS]
 
               --[no-]blinkenlights         Enable or disable the blinkenlights
               --frobnicate                 Frobnicate the furtwangler
@@ -53,28 +53,28 @@ Feature: Kerplutz
         start Start the reactor!
         open Open your mind, Quaid
 
-      Type 'my_bin help COMMAND' for help with a specific command.
+      Type 'my-bin help COMMAND' for help with a specific command.
 
       """
 
   Scenario: no arguments
-    When I run `./my_bin`
+    When I run `./my-bin`
     Then the output should contain:
       """
-      Type 'my_bin help COMMAND' for help with a specific command.
+      Type 'my-bin help COMMAND' for help with a specific command.
 
       """
 
   Scenario: Known flag to executable
-    When I run `./my_bin --version`
+    When I run `./my-bin --version`
     Then the output should contain exactly:
       """
-      my_bin version 1.2.3
+      my-bin version 1.2.3
 
       """
 
   Scenario: Only first action is executed
-    When I run `./my_bin --my-action --version`
+    When I run `./my-bin --my-action --version`
     Then the output should contain exactly:
       """
       This is my action!
@@ -82,12 +82,26 @@ Feature: Kerplutz
       """
 
   Scenario: Get help about a command
-    When I run `./my_bin help start`
+    When I run `./my-bin help start`
     Then the output should contain exactly:
       """
-      Usage: my_bin start [ARGS]
+      Usage: my-bin start [ARGS]
 
               --[no-]lightbulb             Turn the lightbulb on or off
               --dry-run                    Look, but don't touch
 
       """
+
+  Scenario: Get help about a command without a banner
+    When I run `./my-bin help open`
+    Then the output should contain exactly:
+      """
+      Usage: my-bin open [OPTIONS]
+
+              --kuato                      High-level summon
+              --[no-]backtrace             Print the full backtrace
+
+      """
+
+  Scenario: Invoke a flag with required argument without an argument
+  Scenario: Invoke an unknown option
