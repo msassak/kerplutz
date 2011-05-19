@@ -12,8 +12,12 @@ module Kerplutz
       name.to_s.tr("_", "-")
     end
 
-    def option_name
+    def option_sig
       "--#{display_name}"
+    end
+
+    def parser_arguments
+      [option_sig, desc]
     end
 
     def configure(parser, arguments)
@@ -22,20 +26,16 @@ module Kerplutz
   end
 
   class Flag < Option
-    attr_accessor :argument_required
+    attr_accessor :arg_name, :argument_required
 
     def initialize(name, desc, *args)
       super(name, desc)
       @args = args
+      @arg_name = args[0]
     end
 
     def configure(parser, arguments)
-      # TODO: refactor template generation
-      template = @args.inject(option_name) do |acc, arg|
-        acc << " " << convert(arg)
-      end
-
-      args = [template, desc]
+      args = [option_sig, desc]
       args.unshift("-#{abbrev}") if abbrev
 
       parser.on(*args) do |arg|
@@ -47,18 +47,26 @@ module Kerplutz
       end
     end
 
-    def convert(arg)
-      argument_required ? arg.to_s.upcase : "[#{arg.to_s.upcase}]"
+    def option_sig
+      "#{super}#{formatted_arg_name}"
+    end
+
+    def formatted_arg_name
+      if arg_name and argument_required
+        " #{arg_name.to_s.upcase}"
+      elsif arg_name
+        " [#{arg_name.to_s.upcase}]"
+      end
     end
   end
 
   class Switch < Option
-    def option_name
+    def option_sig
       "--[no-]#{display_name}"
     end
 
     def configure(parser, arguments)
-      args = [option_name, desc]
+      args = [option_sig, desc]
       args.unshift("-#{abbrev}") if abbrev
 
       parser.on(*args) do |arg|
@@ -81,7 +89,7 @@ module Kerplutz
         exit unless continue_after_exec
       end
 
-      args = [option_name, desc]
+      args = [option_sig, desc]
       args.unshift("-#{abbrev}") if abbrev
 
       parser.on(*args, &wrapper)

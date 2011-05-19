@@ -11,6 +11,7 @@ module Kerplutz
       it "generates the parser signature" do
         parser.should_receive(:on).with("--kuato", "Summon Kuato")
         subject.configure(parser, {})
+        subject.parser_arguments.should == ["--kuato", "Summon Kuato"]
       end
 
       it "configures the parser" do
@@ -26,6 +27,7 @@ module Kerplutz
       it "generates the parser signature" do
         parser.should_receive(:on).with("--kuato [HOST]", "Summon Kuato")
         subject.configure(parser, {})
+        subject.parser_arguments.should == ["--kuato [HOST]", "Summon Kuato"]
       end
 
       it "configures the parser" do
@@ -49,6 +51,7 @@ module Kerplutz
       it "generates the parser signature" do
         parser.should_receive(:on).with("--kuato HOST", "Summon Kuato")
         subject.configure(parser, {})
+        subject.parser_arguments.should == ["--kuato HOST", "Summon Kuato"]
       end
 
       it "configures the parser" do
