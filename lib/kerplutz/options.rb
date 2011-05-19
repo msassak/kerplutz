@@ -82,12 +82,10 @@ module Kerplutz
     end
 
     def configure(parser, arguments)
-      wrapper = Proc.new do
+      parser.on(*parser_args) do
         @action.call
         exit unless continue_after_exec
       end
-
-      parser.on(*parser_args, &wrapper)
     end
   end
 end
