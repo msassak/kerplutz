@@ -11,26 +11,26 @@ Feature: Kerplutz
       kerplutz = Kerplutz.build "my-bin" do |base|
         base.banner = "Usage: #{base.name} [OPTIONS] COMMAND [ARGS]"
 
-        base.switch :blinkenlights, "Enable or disable the blinkenlights"
+        base.switch :blinkenlights, "Enable or disable the blinkenlights", abbrev: :b
         base.flag   :frobnicate,    "Frobnicate the furtwangler"
 
         base.action :my_action, "Execute my action" do
           puts "This is my action!"
         end
 
-        base.action :version do
+        base.action :version, abbrev: :V do
           puts "#{base.name} version 1.2.3"
         end
 
         base.command :start, "Start the reactor!" do |command|
           command.banner = "Usage: #{base.name} #{command.name} [ARGS]"
 
-          command.switch :lightbulb, "Turn the lightbulb on or off", alias: :lb
-          command.flag   :dry_run,   "Look, but don't touch"
+          command.switch :lightbulb, "Turn the lightbulb on or off"
+          command.flag   :dry_run,   "Look, but don't touch", abbrev: :dr
         end
 
         base.command :open, "Open your mind, Quaid" do |command|
-          command.flag   :kuato,     "High-level summon",        required: :host
+          command.flag   :kuato,     "High-level summon",        abbrev: :k, required: :host
           command.switch :backtrace, "Print the full backtrace", abbrev: :b
         end
       end
