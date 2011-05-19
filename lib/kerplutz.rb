@@ -27,25 +27,25 @@ module Kerplutz
       base.banner = banner
     end
 
-    def flag(name, desc="", opts={})
+    def flag(name, desc, opts={})
       flag = Flag.new(name, desc)
       flag.abbrev = opts[:abbrev]
       base.add_option(flag)
     end
 
-    def switch(name, desc="", opts={})
+    def switch(name, desc, opts={})
       switch = Switch.new(name, desc)
       switch.abbrev = opts[:abbrev]
       base.add_option(switch)
     end
 
-    def action(name, desc="", opts={}, &action)
+    def action(name, desc, opts={}, &action)
       action = Action.new(name, desc, &action)
       action.abbrev = opts[:abbrev]
       base.add_option(action)
     end
 
-    def command(name, desc="")
+    def command(name, desc)
       command = Command.new(name, desc, base.arguments)
       yield builder = Builder.new(command)
       base.add_command(builder.result)
