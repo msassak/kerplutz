@@ -110,10 +110,10 @@ module Kerplutz
     extend Forwardable; def_delegators :@parser, :banner, :help, :parse
 
     def initialize(name, desc, arguments={})
-      @name = name
-      @desc = desc
+      @name      = name
+      @desc      = desc
       @arguments = arguments
-      @parser = OptionParser.new(default_banner)
+      @parser    = OptionParser.new(default_banner)
     end
 
     def display_name
