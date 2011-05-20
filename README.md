@@ -19,6 +19,7 @@ Real documentation will be forthcoming, but for now see
 ## Todo
 
 * README docs for builder and option types
+* Prettify commands summary
 * Read defaults from a config file
 * Argument type-casts
 * List arguments
