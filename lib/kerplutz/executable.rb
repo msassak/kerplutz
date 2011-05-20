@@ -23,27 +23,17 @@ module Kerplutz
       top.add_option(option, false)
     end
 
+    # TODO: Extract this method into separate class that gives all 
+    # the involved parties the chance to parse all of the args
     def parse(args)
-      #first, *rest = args
-
-      #case first
-
-      #when help
-        #puts (rest.empty? ? banner : commands[rest.first].help)
-
-      #when option
-        #remainder = top.parse(args)
-
-      #when commands
-        #remainder = commands[first].parse(rest)
-
-      #else
-        #puts banner
-      #end
-
-      #[arguments, remainder || []]
-
-      if cmd = args.find { |el| commands.has_command?(el) }
+      if args[0] =~ /^(--help|help)$/
+        first, *rest = args
+        if rest.empty?
+          puts banner
+        else
+          puts commands[rest.first].help
+        end
+      elsif cmd = args.find { |el| commands.has_command?(el) }
         cmd_idx = args.index(cmd)
         top_args, cmd_args = args.partition.with_index do |_arg, idx|
           idx < cmd_idx
@@ -51,7 +41,11 @@ module Kerplutz
         top.parse(top_args)
         remainder = commands[cmd].parse(cmd_args[1..-1])
       else
-        remainder = top.parse(args)
+        if args.empty?
+          puts banner
+        else
+          remainder = top.parse(args)
+        end
       end
 
       [arguments, remainder || []]
@@ -62,16 +56,6 @@ module Kerplutz
       help << top.help << "\n"
       help << " Commands:\n" << commands.summary << "\n"
       help << "Type '#{name} help COMMAND' for help with a specific command.\n"
-    end
-
-    private
-
-    def help
-      /^(--help|help)$/
-    end
-
-    def option
-      /^(--|-)[\w-]+$/
     end
   end
 end
