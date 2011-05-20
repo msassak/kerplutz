@@ -8,3 +8,7 @@ end
 task :spec do
   sh "rspec spec"
 end
+
+task :focus do
+  sh "rspec -t focus spec"
+end

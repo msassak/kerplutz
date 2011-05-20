@@ -24,25 +24,37 @@ module Kerplutz
     end
 
     def parse(args)
-      first, *rest = args
-      remainder = []
+      #first, *rest = args
 
-      case first
+      #case first
 
-      when help
-        puts (rest.empty? ? banner : commands[rest.first].help)
+      #when help
+        #puts (rest.empty? ? banner : commands[rest.first].help)
 
-      when option
-        remainder = top.parse(args)
+      #when option
+        #remainder = top.parse(args)
 
-      when commands
-        remainder = commands[first].parse(rest)
+      #when commands
+        #remainder = commands[first].parse(rest)
 
+      #else
+        #puts banner
+      #end
+
+      #[arguments, remainder || []]
+
+      if cmd = args.find { |el| commands.has_command?(el) }
+        cmd_idx = args.index(cmd)
+        top_args, cmd_args = args.partition.with_index do |_arg, idx|
+          idx < cmd_idx
+        end
+        top.parse(top_args)
+        remainder = commands[cmd].parse(cmd_args[1..-1])
       else
-        puts banner
+        remainder = top.parse(args)
       end
 
-      [arguments, remainder]
+      [arguments, remainder || []]
     end
 
     def banner

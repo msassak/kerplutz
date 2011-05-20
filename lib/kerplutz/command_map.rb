@@ -18,6 +18,10 @@ module Kerplutz
       commands[display_name]
     end
 
+    def has_command?(display_name)
+      self.===(display_name)
+    end
+
     def ===(display_name)
       commands.has_key?(display_name)
     end
