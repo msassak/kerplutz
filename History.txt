@@ -1,3 +1,6 @@
+== (0.1.2)
+* Include command name in the results (Mike Sassak)
+
 == (0.1.1)
 * Favor commands when parsing ambiguous flag arguments (Mike Sassak)
 

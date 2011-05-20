@@ -13,9 +13,16 @@ module Kerplutz
     end
 
     describe "#parse" do
-      it "extracts the options from the arguments" do
-        subject.parse(["--foo"]).should == [{ :foo => true }, []]
-        subject.parse(["--foo", "bar"]).should == [{ :foo => "bar" }, []]
+      it "extracts options on the base executable" do
+        subject.parse(["--foo"]).should == ["test", { :foo => true }, []]
+      end
+
+      it "extracts arguments to options on the base executable" do
+        subject.parse(["--foo", "bar"]).should == ["test", { :foo => "bar" }, []]
+      end
+
+      it "extracts arguments to subcommands" do
+        subject.parse(["foo", "bar", "baz"]).should == ["foo", { }, ["bar", "baz"]]
       end
 
       it "parses an unambiguous flag argument" do

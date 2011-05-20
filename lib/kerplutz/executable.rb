@@ -48,7 +48,7 @@ module Kerplutz
         end
       end
 
-      [arguments, remainder || []]
+      [cmd || name, arguments, remainder || []]
     end
 
     def banner

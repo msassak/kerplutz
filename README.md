@@ -18,8 +18,6 @@ Real documentation will be forthcoming, but for now see
 
 ## Todo
 
-* Change result format to include remainder as a k/v pair like:
-    { :my_bin_exec_remainder => ["foo", "bar"] }
 * README docs for builder and option types
 * Prettify commands summary
 * Read defaults from a config file
